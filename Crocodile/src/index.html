@@ -1,14 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Hello</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../styles/output.css" rel="stylesheet">
+    <title>TV Shows Leaderboard</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
+    <script src="https://unpkg.com/mustache@latest"></script>
 </head>
-<body>
-    <h1>HIIIIII</h1>
+
+<body class="bg-pink-100">
+    <header>
+        <div hx-get="navbar/navbar.html" hx-trigger="load" hx-target="this"></div>
+    </header>
+
+    <div class="container mx-auto py-8">
+        <h1 class="text-4xl font-bold text-pink-700 text-center mb-8">Leaderboard</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-800" 
+            id="leaderboardContainer"
+            hx-get="https://crocodile-leaderboard-generator-production.up.railway.app/leaderboard"
+            hx-swap="innerHTML"
+            hx-trigger="load"
+            hx-ext="client-side-templates"
+            mustache-template="leaderboardTemplate"
+            hx-request='{"noHeaders": true}'></div>
+    </div>
+
+    <template id="leaderboardTemplate">
+        {{#.}}
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-pink-300">
+            <div class="p-6">
+                <h2 class="text-xl font-semibold text-pink-800">{{Name}}</h2>
+                <p class="text-gray-600">Count: {{count}}</p>
+            </div>
+        </div>
+        {{/.}}
+    </template>
 </body>
+
 </html>
